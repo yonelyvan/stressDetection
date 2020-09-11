@@ -14,8 +14,8 @@ La implementación se esta desarrollando usando el lenguaje Python y los avances
 <table>
    <thead>
        <tr>
+           <th> </th>
            <th>Actividad</th>
-           <th>Descripción</th>
            <th>Avance</th>
        </tr>
    </thead>
