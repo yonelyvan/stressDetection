@@ -1,0 +1,40 @@
+name: detector
+description: Stress detector v2.0
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.0
+  http: ^0.12.2
+  path_provider: ^1.6.27
+  flutter_audio_recorder: ^0.5.5 #just record wav
+  flutter_bluetooth_serial: ^0.2.2
+  syncfusion_flutter_charts: ^18.4.47 #view signal
+
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/1s.wav
+    - assets/comp.wav
+    - assets/img/too_happy.png
+    - assets/img/happy.png
+    - assets/img/surprised.png
+    - assets/img/sad.png
+    - assets/img/too_sad.png
