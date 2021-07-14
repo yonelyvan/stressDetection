@@ -1,2 +1,3 @@
 # Dependency directories
 SERVER/server-node/node_modules/
+SERVER/server-node/uploads/
