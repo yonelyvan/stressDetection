@@ -21,6 +21,8 @@ Conjunto de datos de **Señales de fisiológicas** disponible en: https://ubicom
 
 
 
-__Implementación del hardware__
- 
+
+## Implementación del hardware
+Implementacion desarrollado en arduino, el circuito se muestra en la siguiente imagen y el código fuente se encuentra en [hardware_GSR/grs_recorder.ino](https://github.com/yonelyvan/stressDetection/blob/master/hardware_GSR/grs_recorder.ino) 
+
 ![Screenshot](hardware_GSR/hardware.png)
