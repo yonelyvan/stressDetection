@@ -67,7 +67,7 @@ __Capturas de pantallas__
 __Diagrama de caja y bigotes de las 8 pruebas durante 25 minutos__
 ![Screenshot](data_resultados/25min_8test.png)
 
-![Screenshot](data_resultados/res.png)
+![Screenshot](data_resultados/rs.png)
 
 
 El registro de niveles de estrés de cada prueba en tiempo real se encuentra en la carpeta [data_resultados/data](https://github.com/yonelyvan/stressDetection/tree/master/data_resultados/data)
