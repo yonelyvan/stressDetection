@@ -12,15 +12,15 @@ class RecordBloc {
   StatusMenuTab _statusMenuTab = StatusMenuTab.none;
 
   /// stream controller CRUD
-  final _recordListStreamController = StreamController<Map<int, Record>>();
+  final _recordListStreamController = StreamController<Map<int, Record>>.broadcast();
 
-  final _addRecordStreamController = StreamController<Record>();
+  final _addRecordStreamController = StreamController<Record>.broadcast();
   //final _readTasksStreamController = StreamController<Record>();
-  final _updateRecordStreamController = StreamController<Pair<Record,Record>>();
-  final _removeRecordStreamController = StreamController<Record>();
+  final _updateRecordStreamController = StreamController<Pair<Record,Record>>.broadcast();
+  final _removeRecordStreamController = StreamController<Record>.broadcast();
   //for status tab_bar
-  final _statusBarStreamController = StreamController<StatusMenuTab>();
-  final _changeStatusTabBarStreamController = StreamController<StatusMenuTab>();
+  final _statusBarStreamController = StreamController<StatusMenuTab>.broadcast();
+  final _changeStatusTabBarStreamController = StreamController<StatusMenuTab>.broadcast();
 
   /// getters : Stream & sinks
   Stream<Map<int, Record>> get recordListStream => _recordListStreamController.stream;

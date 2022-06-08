@@ -4,6 +4,7 @@ import 'package:stdetector/src/repository/stress_level_repository.dart';
 
 class StressLevelBase{}
 class UpdateStressLevelGSR extends StressLevelBase {
+
   final int stressValueGSR;
   UpdateStressLevelGSR(this.stressValueGSR);
 }
@@ -18,10 +19,10 @@ class StressLevelBlock{
   StressLevelRepository repository = StressLevelRepository();
 
   //streams
-  StreamController<StressLevelBase> _input = StreamController();
+  StreamController<StressLevelBase> _input = StreamController.broadcast();
 
-  StreamController<int> _outputGSR = StreamController();
-  StreamController<int> _outputCurrentStressLevel = StreamController();
+  StreamController<int> _outputGSR = StreamController.broadcast();
+  StreamController<int> _outputCurrentStressLevel = StreamController.broadcast();
 
   // :listen ui
   Stream<int> get stressLevelGSRStream => _outputGSR.stream;
