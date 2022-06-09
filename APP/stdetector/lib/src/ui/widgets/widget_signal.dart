@@ -12,13 +12,17 @@ class WidgetSignal extends StatelessWidget {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     return Container(
-        height: 200,
+        height: 300,
         width: screenWidth,
         child: SfCartesianChart(
             primaryXAxis: CategoryAxis(),
-            title: ChartTitle(text: label,textStyle: TextStyle(fontSize: 14, color: Colors.black38)),
-
-            ///legend: Legend(isVisible: true),
+            title: ChartTitle(
+                text: label,
+                textStyle: TextStyle(fontSize: 14, color: Colors.black38)),
+            legend: Legend(
+                isVisible: true,
+                position: LegendPosition.bottom,
+                ),
             // Enable tooltip
             tooltipBehavior: TooltipBehavior(enable: false),
             enableAxisAnimation: true,
@@ -27,6 +31,9 @@ class WidgetSignal extends StatelessWidget {
                 dataSource: data,
                 xValueMapper: (GSRData sales, _) => sales.time,
                 yValueMapper: (GSRData sales, _) => sales.value,
+                xAxisName: "Time",
+                yAxisName: "Level",
+                name: "Stress Level",
                 // Enable data label
                 //dataLabelSettings: DataLabelSettings(isVisible: true)
               )

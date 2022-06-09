@@ -38,7 +38,7 @@ class _ScreenRecorders extends State<ScreenRecorders> {
     return Scaffold(
 
         appBar: AppBar(
-        title: Text("local"),
+        title: Text("Records"),
         actions: <Widget>[isEditing() ? options(context) : Text("")],
       ),
       body: Padding(
@@ -137,7 +137,7 @@ class _ScreenRecorders extends State<ScreenRecorders> {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(15))),
             //title: Text(' '),
-            content: Text("delete_option_sms"),
+            content: Text("Delete selected records"),
             actions: <Widget>[
               FlatButton(
                   onPressed: () {

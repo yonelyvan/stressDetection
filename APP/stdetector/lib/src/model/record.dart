@@ -16,7 +16,7 @@ class Record {
         "RecordId: _id: $id, filename: $filename, samples: $samples, date: $date");
   }
 
-  String dateTtoLocalFormat(){
+  String dateToLocalFormat(){
     String s = "";
     String m=date.month.toString();
     m = m.length<=1? "0$m" : m;

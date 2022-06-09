@@ -90,7 +90,7 @@ class WidgetRecordState extends State<WidgetRecord> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                widget.record.dateTtoLocalFormat(),
+                widget.record.dateToLocalFormat(),
               ),
               Text(
                 widget.record.samples.toString(),

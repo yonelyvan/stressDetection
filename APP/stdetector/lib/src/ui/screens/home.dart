@@ -73,7 +73,7 @@ class _HomeState extends State<Home> {
       home: Scaffold(
         key: scaffoldKey,
         appBar: AppBar(
-          title: Text("Detector de estrés"),
+          title: Text("Stress Detector"),
           //backgroundColor: Colors.deepPurple,
           actions: <Widget>[
             FlatButton.icon(
@@ -82,7 +82,7 @@ class _HomeState extends State<Home> {
                 color: Colors.white,
               ),
               label: Text(
-                "Actualizar",
+                "Update",
                 style: TextStyle(
                   color: Colors.white,
                 ),
@@ -96,7 +96,7 @@ class _HomeState extends State<Home> {
                 // while the app is running, user can refresh
                 // the paired devices list.
                 await getPairedDevices().then((_) {
-                  show('Se actualizó la lista de dispositivos');
+                  show('Device list updated');
                 });
               },
             ),
@@ -117,13 +117,13 @@ class _HomeState extends State<Home> {
                 ),
 
                 Padding(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.only(left: 10, right: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       const Expanded(
                         child: Text(
-                          'Habilitar Bluetooth',
+                          'Enable bluetooth',
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 16,
@@ -164,12 +164,12 @@ class _HomeState extends State<Home> {
                     Column(
                       children: <Widget>[
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.only(left: 10, right: 10),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               const Text(
-                                'Dispositivo:',
+                                'Device:',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -192,21 +192,22 @@ class _HomeState extends State<Home> {
                                         ? _disconnect
                                         : _connect,
                                 child: Text(
-                                    connected ? 'Desconectar' : 'Conectar'),
+                                    connected ? 'Disconnect' : 'Connect'),
                               ),
                             ],
                           ),
                         ),
                       ],
                     ),
-                    Container(
+                    /*Container(
                       color: Colors.blue,
-                    ),
+                    ),*/
                   ],
                 ),
+                const SizedBox(height: 10),
                 Container(
                   child: Padding(
-                    padding: const EdgeInsets.all(20),
+                    padding: const EdgeInsets.only(left: 1, right: 1),
                     child: Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -216,19 +217,19 @@ class _HomeState extends State<Home> {
                           WidgetSignal(
                             data: gsrBuffer.getProcessData(),
                             label:
-                                "Nivel de estrés (Valor GSR: ${currentValueGSR.toString()})",
+                                "(GSR value: ${currentValueGSR.toString()})",
                           ),
                           //SizedBox(height: 5),
-                          const SizedBox(height: 10),
 
                           ///bloc
                           //Container(color: Colors.black38,height: 2,),
-                          const Text(
+                      /*
+                      const Text(
                             "Stress Level",
                             style:
                                 TextStyle(fontSize: 16, color: Colors.black38),
-                          ),
-                          const SizedBox(height: 10),
+                          ),*/
+                          //const SizedBox(height: 10),
                           StreamBuilder(
                             stream: _stressLevelBlock.currentStressLevelStream,
                             initialData: 0,
@@ -245,7 +246,7 @@ class _HomeState extends State<Home> {
                             icon: Icon(_isRecording
                                 ? Icons.stop_circle
                                 : Icons.directions_run),
-                            label: Text("Init test"), //label text
+                            label: Text("Start detector"), //label text
                             style: ElevatedButton.styleFrom(
                                 primary: Colors
                                     .blueAccent //elevated btton background color
@@ -255,7 +256,7 @@ class _HomeState extends State<Home> {
                           ///go to settings
                           const SizedBox(height: 40),
                           const Text(
-                            "NOTA: Si no puede encontrar el dispositivo en la lista, empareje el dispositivo yendo a la configuración de bluetooth",
+                            "NOTE: If you can't find the device in the list, please pair the device by going to bluetooth settings",
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.normal,
@@ -266,7 +267,7 @@ class _HomeState extends State<Home> {
                           const SizedBox(height: 15),
                           RaisedButton(
                             elevation: 2,
-                            child: Text("Configuración Bluetooth"),
+                            child: Text("Bluetooth settings"),
                             onPressed: () {
                               FlutterBluetoothSerial.instance.openSettings();
                             },
@@ -332,7 +333,7 @@ class _HomeState extends State<Home> {
   }
 
   _turnOnBluetooth() {
-    show('turn on bluetooth');
+    show('Turn on bluetooth');
   }
 
   void disposeBluetooth() {
