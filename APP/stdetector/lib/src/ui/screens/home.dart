@@ -242,11 +242,13 @@ class _HomeState extends State<Home> {
 
                           const SizedBox(height: 20),
                           connected? ElevatedButton.icon(
-                            onPressed: _onRecord,
+                            onPressed: (){
+                              _onRecord(context);
+                            },
                             icon: Icon(_isRecording
                                 ? Icons.stop_circle
                                 : Icons.directions_run),
-                            label: Text("Start detector"), //label text
+                            label: Text(_isRecording?"stop detector":"Start detector"), //label text
                             style: ElevatedButton.styleFrom(
                                 primary: Colors
                                     .blueAccent //elevated btton background color
@@ -301,28 +303,74 @@ class _HomeState extends State<Home> {
     ]);
   }
 
-  _onRecord() {
+  /// Dialoig to insert
+  void _dialogInsert(BuildContext c_context) {
+    String fn="";
+    showDialog(
+        context: c_context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(15))),
+            //title: Text(Translations.of(context).text("new_option")),
+            content: Container(
+              width: double.maxFinite,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    TextField(
+                      onChanged: (value) {
+                        fn = value;
+                      },
+                      decoration: InputDecoration(
+                          labelText: "file name"),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text("cancel"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              FlatButton(
+                child: Text("save"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _saveFileAndRecorder(fn);
+                },
+              )
+            ],
+          );
+        });
+  }
+
+
+  _saveFileAndRecorder(String fileName){
+    List<List<int>> dataSignalSL = gsrBuffer.getMatrixSignalAndStressLevels();
+    //todo SAVE
+    Files files = Files();
+    DateTime current = DateTime.now();
+    String fn = "$fileName ${_localFormalDateTime(current)}.csv";
+    Record record = Record(filename: fn ,date: current, samples: dataSignalSL.length);
+    ///write on disk
+    //files.writeSignal(signal: signal, record: record);
+    files.writeSignalAndStressLevels(signalAndStressLevels: dataSignalSL,record: record);
+    ///write on db
+    _recordBloc.addRecord.add(record);
+    show("saving .csv file");
+  }
+
+  _onRecord(BuildContext c_context) {
     if (_isRecording) {
       //stop recording & save file
       setState(() {
         _isRecording = !_isRecording;
       });
-      ///save file
-      List<List<int>> dataSignalSL = gsrBuffer.getMatrixSignalAndStressLevels();
-      print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>signal to save");
-      String filename = "CS2303.csv";
-      //todo SAVE
-      Files files = Files();
-      DateTime current = DateTime.now();
-      Record record = Record(filename: filename ,date: current, samples: dataSignalSL.length);
-      ///write on disk
-      //files.writeSignal(signal: signal, record: record);
-      files.writeSignalAndStressLevels(signalAndStressLevels: dataSignalSL,record: record);
-      ///write on db
-      _recordBloc.addRecord.add(record);
-      print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> finish on: ui_screen_record");
-
-      show("saving .csv file");
+      _dialogInsert(c_context);
     } else {
       //start recording
       gsrBuffer.clear();
@@ -550,4 +598,16 @@ class _HomeState extends State<Home> {
     _stressLevelBlock.sendEvent
         .add(UpdateStressLevelGSR(gsrBuffer.CurrentStressLevel));
   }
+
+
+  String _localFormalDateTime(DateTime dt){
+    String r ="";
+    String m = dt.month.toString();
+    String d = dt.day.toString();
+    m = m.length<=1? "0$m" : m;
+    d = d.length<=1? "0$d" : d;
+    r="${dt.year}-$m-$d ${dt.hour}:${dt.minute}";
+    return r;
+  }
+
 }

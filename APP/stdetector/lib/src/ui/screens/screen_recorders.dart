@@ -305,6 +305,6 @@ class _ScreenRecorders extends State<ScreenRecorders> {
       pathFiles.add(file.path);
     }
     print(">>>>>>>>>>>>>>>>>>ready to share files");
-    Share.shareFiles(pathFiles, text: 'Share from app');
+    Share.shareFiles(pathFiles, text: 'GSR records, signal and stress level');
   }
 }
