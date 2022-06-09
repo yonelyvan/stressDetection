@@ -43,7 +43,9 @@ class WidgetRecordState extends State<WidgetRecord> {
           });
         } else {
           widget.onSelected(widget.record);
-          HapticFeedback.selectionClick(); ///vibrate
+          HapticFeedback.selectionClick();
+
+          ///vibrate
           setState(() {
             selected = true;
           });
@@ -77,6 +79,36 @@ class WidgetRecordState extends State<WidgetRecord> {
       child: Card(
         color: selected ? Colors.deepOrange : Colors.white70,
         child: ListTile(
+          leading: Icon(
+            Icons.back_hand,
+            color: Colors.grey,
+          ),
+          title: Text(
+            widget.record.filename,
+          ),
+          subtitle: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                widget.record.dateTtoLocalFormat(),
+              ),
+              Text(
+                widget.record.samples.toString(),
+              ),
+            ],
+          ),
+
+          ///trailing: Icon(Icons.more_vert),
+        ),
+      ),
+    );
+  }
+}
+
+/**
+Card(
+        color: selected ? Colors.deepOrange : Colors.white70,
+        child: ListTile(
           leading: Icon( Icons.back_hand,
             color: Colors.grey,
           ),
@@ -87,6 +119,4 @@ class WidgetRecordState extends State<WidgetRecord> {
           ///trailing: Icon(Icons.more_vert),
         ),
       ),
-    );
-  }
-}
+*/

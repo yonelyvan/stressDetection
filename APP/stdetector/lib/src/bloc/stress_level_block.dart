@@ -19,10 +19,10 @@ class StressLevelBlock{
   StressLevelRepository repository = StressLevelRepository();
 
   //streams
-  StreamController<StressLevelBase> _input = StreamController.broadcast();
+  StreamController<StressLevelBase> _input = StreamController();
 
-  StreamController<int> _outputGSR = StreamController.broadcast();
-  StreamController<int> _outputCurrentStressLevel = StreamController.broadcast();
+  StreamController<int> _outputGSR = StreamController();
+  StreamController<int> _outputCurrentStressLevel = StreamController();
 
   // :listen ui
   Stream<int> get stressLevelGSRStream => _outputGSR.stream;

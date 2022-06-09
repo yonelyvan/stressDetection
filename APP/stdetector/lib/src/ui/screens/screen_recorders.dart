@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:stdetector/src/ui/screens/screen_tabs.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:share_plus/share_plus.dart';
@@ -37,11 +36,11 @@ class _ScreenRecorders extends State<ScreenRecorders> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /**
+
         appBar: AppBar(
         title: Text("local"),
         actions: <Widget>[isEditing() ? options(context) : Text("")],
-      ),*/
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 0.0),
         child: Container(
@@ -89,41 +88,40 @@ class _ScreenRecorders extends State<ScreenRecorders> {
           ),
         ),
       ),
-      floatingActionButton: options(context),
+      //floatingActionButton: options(context),
     );
   }
 
+
+
   Widget options(BuildContext context) {
     if (isEditing()) {
-      return Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+      return Row(mainAxisAlignment: MainAxisAlignment.end, children: [
         _selectedRecords.length < 2
-            ? FloatingActionButton(
-                child: Icon(Icons.edit),
+            ? IconButton(
+                icon: Icon(Icons.edit),
                 onPressed: () {
                   _showDialogUpdate(context);
                 },
-                heroTag: null,
               )
             : SizedBox(width: 2.0),
         SizedBox(
           height: 15,
         ),
-        FloatingActionButton(
-          child: Icon(Icons.delete),
+        IconButton(
+          icon: Icon(Icons.delete),
           onPressed: () {
             _showDialogDelete(context);
           },
-          heroTag: null,
         ),
         SizedBox(
           height: 15,
         ),
-        FloatingActionButton(
-          child: Icon(Icons.share),
+        IconButton(
+          icon: Icon(Icons.share),
           onPressed: () {
             _shareFiles();
           },
-          heroTag: null,
         ),
       ]);
     } else {

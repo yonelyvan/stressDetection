@@ -9,12 +9,23 @@ class Record {
   DateTime date;
 
   Record(
-      {this.id = 0, this.filename = "", this.samples = 0, required this.date});
+      {this.id = 0, this.filename = "", this.samples=0, required this.date});
 
   void printRecord() {
     print(
         "RecordId: _id: $id, filename: $filename, samples: $samples, date: $date");
   }
+
+  String dateTtoLocalFormat(){
+    String s = "";
+    String m=date.month.toString();
+    m = m.length<=1? "0$m" : m;
+    String d=date.day.toString();
+    d = d.length<=1? "0$d" : d;
+    s = "${date.year}-$m-$d  ${date.hour}:${date.minute}";
+    return s;
+  }
+
 
   factory Record.fromMap(Map<dynamic, dynamic> map) {
     return Record(

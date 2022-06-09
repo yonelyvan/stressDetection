@@ -20,7 +20,13 @@ class GSRBuffer {
     _queue.add(value);
   }
 
-  /// generate data from to plot the signal
+  void clear(){
+    if(_queue.length>0){
+      _queue.clear();
+    }
+  }
+
+  /// GET data to plot the signal
   List<GSRData> getData() {
     List<GSRData> data = [];//new List<GSRData>();
     int cont = 0;
@@ -51,6 +57,26 @@ class GSRBuffer {
 
   int get CurrentStressLevel => _currentStressLevel;
 
+  int min(int a, int b) => a<b?a:b;
+
+  List<List<int>> getMatrixSignalAndStressLevels(){
+    List<List<int>> r = [];
+    List<double> signal = getSignalBuffer();
+    List<GSRData> level = getProcessData();
+    List<int> s = [];
+    List<int> sl = [];
+    for(double e in signal){
+      s.add(e.toInt());
+    }
+    for(GSRData e in level){
+      sl.add(e.value.toInt());
+    }
+    int l = min(s.length,sl.length);
+    for(int i =0; i<l; i++){
+      r.add( [s[i], sl[i]] );
+    }
+    return r;
+  }
 
 
   List<double> getSignalBuffer() => _queue.toList();
@@ -60,7 +86,6 @@ class GSRBuffer {
   double get timeInMinutes{
     return (_queue.length)/60.0;
   }
-
 
 
 }

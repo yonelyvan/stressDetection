@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stdetector/src/ui/screens/screen_tabs.dart';
+import 'package:stdetector/src/ui/screens/home.dart';
 
 
 void main() {
@@ -13,11 +13,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Detector',
       theme: ThemeData(
-        primarySwatch: Colors.orange,
+        primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      //home: Home(),
-      home: ScreenTabs(),
+      home: Home(),
     );
   }
 }

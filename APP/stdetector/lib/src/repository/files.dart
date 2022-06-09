@@ -27,6 +27,12 @@ class Files{
     return file.writeAsString(str);
   }
 
+  Future<File> writeSignalAndStressLevels({required List<List<int>> signalAndStressLevels, required Record record}) async {
+    String str = getDataGSRAndStressLevels(signalAndStressLevels);
+    final file = await getLocalFile(record);
+    return file.writeAsString(str);
+  }
+
   /// Read
   Future<List<int>> readCounter({required Record record}) async {
     List<int> l =[];
@@ -71,6 +77,19 @@ class Files{
       List<dynamic> d = [];
       d.add(e);
       rows.add(d);
+    }
+    String csv = const ListToCsvConverter().convert(rows);
+    return csv;
+  }
+
+  // input: GSR values: [[x1,l1], [x2,l2], ..., [xn,ln]]
+  // output: csv format with GSR data
+  String getDataGSRAndStressLevels(List<List<int>> signalAndStressLevels){
+    List<List<dynamic>> rows = [];
+    for(List<int> e in signalAndStressLevels) {
+      //List<dynamic> d = [];
+      //d.add(e);
+      rows.add(e);
     }
     String csv = const ListToCsvConverter().convert(rows);
     return csv;

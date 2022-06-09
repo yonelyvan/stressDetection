@@ -62,7 +62,7 @@ class _ScreenRecorderSignal extends State<ScreenRecorderSignal> {
     //todo SAVE
     Files files = Files();
     DateTime current = DateTime.now();
-    Record record = Record(filename: filename ,date: current);
+    Record record = Record(filename: filename ,date: current, samples: 0);
     ///write on disk
     files.writeSignal(signal: signal, record: record);
     ///write on db
