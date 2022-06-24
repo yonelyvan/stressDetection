@@ -36,9 +36,5 @@ flutter:
 
 
   assets:
-    - assets/img/too_happy.png
-    - assets/img/happy.png
-    - assets/img/surprised.png
-    - assets/img/sad.png
-    - assets/img/too_sad.png
+    - assets/img/
 

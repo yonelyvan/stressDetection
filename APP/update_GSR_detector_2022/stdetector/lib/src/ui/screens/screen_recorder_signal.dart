@@ -44,7 +44,8 @@ class _ScreenRecorderSignal extends State<ScreenRecorderSignal> {
               _dialogInsert(context);
             },
             heroTag: null,
-          )
+          ),
+
         ])
 
     );

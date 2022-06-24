@@ -26,62 +26,57 @@ class WidgetStressLevel extends StatelessWidget {
               height: screenHeight,
               width: screenWidth,
               decoration: BoxDecoration(
-                color: stressLevel == 1
-                    ? Color(0xff4dcc57)
-                    : notFocusedColor,
+                //color: stressLevel == 1 ? Color(0xff4dcc57) : notFocusedColor,
                 borderRadius: BorderRadius.all(Radius.circular(_border)),
               ),
               padding: EdgeInsets.all(_padding),
               margin: EdgeInsets.all(_margin),
-              child: Image.asset("assets/img/too_happy.png")),
+              child: Image.asset(
+                  stressLevel == 1 ? "assets/img/1.png" : "assets/img/1b.png")),
           Container(
               height: screenHeight,
               width: screenWidth,
               padding: EdgeInsets.all(_padding),
               margin: EdgeInsets.all(_margin),
               decoration: BoxDecoration(
-                color: stressLevel == 2
-                    ? Color(0xffacd91c)
-                    : notFocusedColor,
+                //color: stressLevel == 2 ? Color(0xffacd91c) : notFocusedColor,
                 borderRadius: BorderRadius.all(Radius.circular(_border)),
               ),
-              child: Image.asset("assets/img/happy.png")),
+              child: Image.asset(
+                  stressLevel == 2 ? "assets/img/2.png" : "assets/img/2b.png")),
           Container(
               height: screenHeight,
               width: screenWidth,
               padding: EdgeInsets.all(_padding),
               margin: EdgeInsets.all(_margin),
               decoration: BoxDecoration(
-                color: stressLevel == 3
-                    ? Color(0xffffce2a)
-                    : notFocusedColor,
+                //color: stressLevel == 3 ? Color(0xffffce2a) : notFocusedColor,
                 borderRadius: BorderRadius.all(Radius.circular(_border)),
               ),
-              child: Image.asset("assets/img/surprised.png")),
+              child: Image.asset(
+                  stressLevel == 3 ? "assets/img/3.png" : "assets/img/3b.png")),
           Container(
               height: screenHeight,
               width: screenWidth,
               padding: EdgeInsets.all(_padding),
               margin: EdgeInsets.all(_margin),
               decoration: BoxDecoration(
-                color: stressLevel == 4
-                    ? Color(0xfffd7e1f)
-                    : notFocusedColor,
+                //color: stressLevel == 4 ? Color(0xfffd7e1f) : notFocusedColor,
                 borderRadius: BorderRadius.all(Radius.circular(_border)),
               ),
-              child: Image.asset("assets/img/sad.png")),
+              child: Image.asset(
+                  stressLevel == 4 ? "assets/img/4.png" : "assets/img/4b.png")),
           Container(
               height: screenHeight,
               width: screenWidth,
               padding: EdgeInsets.all(_padding),
               margin: EdgeInsets.all(_margin),
               decoration: BoxDecoration(
-                color: stressLevel == 5
-                    ? Color(0xffe8344f)
-                    : notFocusedColor,
+                //color: stressLevel == 5 ? Color(0xffe8344f) : notFocusedColor,
                 borderRadius: BorderRadius.all(Radius.circular(_border)),
               ),
-              child: Image.asset("assets/img/too_sad.png")),
+              child: Image.asset(
+                  stressLevel == 5 ? "assets/img/6.png" : "assets/img/6b.png")),
         ],
       ),
     );
