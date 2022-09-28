@@ -15,6 +15,7 @@ import '../../bloc/record_bloc.dart';
 import '../../model/gsr_data.dart';
 import '../../model/record.dart';
 import '../../repository/files.dart';
+import 'package:flutter_toastr/flutter_toastr.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -26,7 +27,8 @@ class _HomeState extends State<Home> {
   StressLevelBlock _stressLevelBlock = StressLevelBlock();
 
   // Initializing a global key, as it would help us in showing a SnackBar later
-  final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
+  ///final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
   double currentValueGSR = 0;
   GSRBuffer gsrBuffer = GSRBuffer();
 
@@ -51,6 +53,7 @@ class _HomeState extends State<Home> {
   bool _isRecording = false;
   final RecordBloc _recordBloc = RecordBloc();
 
+
   @override
   void initState() {
     super.initState();
@@ -71,12 +74,12 @@ class _HomeState extends State<Home> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        key: scaffoldKey,
+        ///key: scaffoldKey,
         appBar: AppBar(
           title: Text("Stress Detector"),
           //backgroundColor: Colors.deepPurple,
           actions: <Widget>[
-            FlatButton.icon(
+            ElevatedButton.icon(
               icon: Icon(
                 Icons.bluetooth,
                 color: Colors.white,
@@ -87,16 +90,17 @@ class _HomeState extends State<Home> {
                   color: Colors.white,
                 ),
               ),
+              /*
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30),
-              ),
+              ),*/
               //splashColor: Colors.deepPurple,
               onPressed: () async {
                 // So, that when new devices are paired
                 // while the app is running, user can refresh
                 // the paired devices list.
                 await getPairedDevices().then((_) {
-                  show('Device list updated');
+                  show(context,'Device list updated');
                 });
               },
             ),
@@ -146,7 +150,7 @@ class _HomeState extends State<Home> {
                             isButtonUnavailable = false;
 
                             if (connected) {
-                              _disconnect();
+                              _disconnect(context);
                             }
                           }
 
@@ -185,12 +189,24 @@ class _HomeState extends State<Home> {
                                 },
                                 value: _devicesList.isNotEmpty ? _device : null,
                               ),
-                              RaisedButton(
-                                onPressed: isButtonUnavailable
-                                    ? _turnOnBluetooth
+                              ElevatedButton(
+                                onPressed: (){
+                                  if(isButtonUnavailable){
+                                    _turnOnBluetooth(context);
+                                  } else{
+                                    if(connected){
+                                      _disconnect(context);
+                                    }else{
+                                      _connect(context);
+                                    }
+                                  }
+                                },
+
+                                /*
+                                isButtonUnavailable ? _turnOnBluetooth(context)
                                     : connected
-                                        ? _disconnect
-                                        : _connect,
+                                        ? _disconnect(context)
+                                        : _connect(context),*/
                                 child: Text(
                                     connected ? 'Disconnect' : 'Connect'),
                               ),
@@ -267,8 +283,8 @@ class _HomeState extends State<Home> {
                           ),
 
                           const SizedBox(height: 15),
-                          RaisedButton(
-                            elevation: 2,
+                          TextButton(
+                            //elevation: 2,
                             child: Text("Bluetooth settings"),
                             onPressed: () {
                               FlutterBluetoothSerial.instance.openSettings();
@@ -330,17 +346,17 @@ class _HomeState extends State<Home> {
               ),
             ),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text("cancel"),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
-              FlatButton(
+              TextButton(
                 child: Text("save"),
                 onPressed: () {
                   Navigator.of(context).pop();
-                  _saveFileAndRecorder(fn);
+                  _saveFileAndRecorder(c_context,fn);
                 },
               )
             ],
@@ -349,7 +365,7 @@ class _HomeState extends State<Home> {
   }
 
 
-  _saveFileAndRecorder(String fileName){
+  _saveFileAndRecorder(BuildContext cnt,String fileName){
     List<List<int>> dataSignalSL = gsrBuffer.getMatrixSignalAndStressLevels();
     //todo SAVE
     Files files = Files();
@@ -361,7 +377,7 @@ class _HomeState extends State<Home> {
     files.writeSignalAndStressLevels(signalAndStressLevels: dataSignalSL,record: record);
     ///write on db
     _recordBloc.addRecord.add(record);
-    show("saving .csv file");
+    show(cnt,"saving .csv file");
   }
 
   _onRecord(BuildContext c_context) {
@@ -380,8 +396,8 @@ class _HomeState extends State<Home> {
     }
   }
 
-  _turnOnBluetooth() {
-    show('Turn on bluetooth');
+  _turnOnBluetooth(BuildContext cnt) {
+    show(cnt,'Turn on bluetooth');
   }
 
   void disposeBluetooth() {
@@ -482,12 +498,12 @@ class _HomeState extends State<Home> {
   }
 
   // Method to connect to bluetooth
-  void _connect() async {
+  void _connect(BuildContext cnt) async {
     setState(() {
       isButtonUnavailable = true;
     });
     if (_device == null) {
-      show('No device selected');
+      show(cnt,'No device selected');
     } else {
       if (!isConnected) {
         await BluetoothConnection.toAddress(_device?.address)
@@ -512,7 +528,7 @@ class _HomeState extends State<Home> {
           print('Cannot connect, exception occurred');
           print(error);
         });
-        show('Device connected');
+        show(cnt,'Device connected');
 
         setState(() => isButtonUnavailable = false);
       }
@@ -536,14 +552,14 @@ class _HomeState extends State<Home> {
   }
 
   // Method to disconnect bluetooth
-  void _disconnect() async {
+  void _disconnect( BuildContext cnt) async {
     setState(() {
       isButtonUnavailable = true;
       deviceState = 0;
     });
 
     await connection!.close();
-    show('Device disconnected');
+    show(cnt,'Device disconnected');
     if (!connection!.isConnected) {
       setState(() {
         connected = false;
@@ -578,19 +594,22 @@ class _HomeState extends State<Home> {
 
   // Method to show a Snackbar,
   // taking message as the text
-  Future show(
+  Future show_old(
+  BuildContext cnt,
     String message, {
     Duration duration: const Duration(seconds: 3),
   }) async {
     await new Future.delayed(new Duration(milliseconds: 100));
-    scaffoldKey.currentState!.showSnackBar(
-      new SnackBar(
-        content: new Text(
-          message,
-        ),
-        duration: duration,
+    print(">>>>>>>>>>>>> show snackbar");
+    ScaffoldMessenger.of(cnt).showSnackBar(
+      const SnackBar(
+        content: Text("Type Your message here..."),
       ),
     );
+  }
+
+  show( BuildContext cnt, String message) {
+    FlutterToastr.show(message, cnt, duration: FlutterToastr.lengthLong, position:  FlutterToastr.bottom);
   }
 
   //block functions

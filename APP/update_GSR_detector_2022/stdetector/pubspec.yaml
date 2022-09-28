@@ -1,14 +1,12 @@
 name: stdetector
-description: stress level detector
+description: A new Flutter project.
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-
 
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.17.1 <3.0.0"
-
+  sdk: '>=2.18.0 <3.0.0'
 
 dependencies:
   flutter:
@@ -22,19 +20,21 @@ dependencies:
   share_plus: ^4.0.5
   sqflite: any
   fluttertoast: ^8.0.9
+  flutter_toastr: ^1.0.3
+
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
+
   flutter_lints: ^2.0.0
+
 
 flutter:
 
 
   uses-material-design: true
 
-
   assets:
     - assets/img/
-

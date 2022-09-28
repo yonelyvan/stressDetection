@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.teamreeelax.stdetector">
+    package="com.example.stdetector">
    <application
         android:label="stdetector"
         android:name="${applicationName}"
