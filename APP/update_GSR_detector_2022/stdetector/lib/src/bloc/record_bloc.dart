@@ -56,7 +56,7 @@ class RecordBloc {
 
   /// call functions
   _addRecord(Record record) {
-    print(">>>>>>>>>>>>>>>>>>>>>>>>> on received: record_bloc");
+    //print(">>>>>>>>>>>>>>>>>>>>>>>>> on received: record_bloc");
     data.insertNewRecord(record).then((r) {
       _recordMapList[r.id] = r;
       recordListSink.add(_recordMapList);
@@ -102,11 +102,11 @@ class RecordBloc {
 
   //for status tab bar
   _changeStatus(StatusMenuTab newStatus){
-    print(">>>>>>>>>>>>>>>>>>>>>>>>> on received status Bar: record_bloc");
+    //print(">>>>>>>>>>>>>>>>>>>>>>>>> on received status Bar: record_bloc");
     _statusMenuTab = newStatus;
     //statusBarSink.add(_statusMenuTab);
     _statusBarStreamController.add(_statusMenuTab);
-    print(">>>>>>>>>>>>>>>>>>>>>>>>> updates status Bar: $_statusMenuTab");
+    //print(">>>>>>>>>>>>>>>>>>>>>>>>> updates status Bar: $_statusMenuTab");
   }
 
 

@@ -53,7 +53,6 @@ class _HomeState extends State<Home> {
   bool _isRecording = false;
   final RecordBloc _recordBloc = RecordBloc();
 
-
   @override
   void initState() {
     super.initState();
@@ -100,7 +99,7 @@ class _HomeState extends State<Home> {
                 // while the app is running, user can refresh
                 // the paired devices list.
                 await getPairedDevices().then((_) {
-                  show(context,'Device list updated');
+                  show(context, 'Device list updated');
                 });
               },
             ),
@@ -119,7 +118,6 @@ class _HomeState extends State<Home> {
                     valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
                   ),
                 ),
-
                 Padding(
                   padding: const EdgeInsets.only(left: 10, right: 10),
                   child: Row(
@@ -162,7 +160,6 @@ class _HomeState extends State<Home> {
                     ],
                   ),
                 ),
-
                 Stack(
                   children: <Widget>[
                     Column(
@@ -190,13 +187,13 @@ class _HomeState extends State<Home> {
                                 value: _devicesList.isNotEmpty ? _device : null,
                               ),
                               ElevatedButton(
-                                onPressed: (){
-                                  if(isButtonUnavailable){
+                                onPressed: () {
+                                  if (isButtonUnavailable) {
                                     _turnOnBluetooth(context);
-                                  } else{
-                                    if(connected){
+                                  } else {
+                                    if (connected) {
                                       _disconnect(context);
-                                    }else{
+                                    } else {
                                       _connect(context);
                                     }
                                   }
@@ -207,8 +204,8 @@ class _HomeState extends State<Home> {
                                     : connected
                                         ? _disconnect(context)
                                         : _connect(context),*/
-                                child: Text(
-                                    connected ? 'Disconnect' : 'Connect'),
+                                child:
+                                    Text(connected ? 'Disconnect' : 'Connect'),
                               ),
                             ],
                           ),
@@ -232,14 +229,13 @@ class _HomeState extends State<Home> {
                           ///--------------------- plot
                           WidgetSignal(
                             data: gsrBuffer.getProcessData(),
-                            label:
-                                "(GSR value: ${currentValueGSR.toString()})",
+                            label: "(GSR value: ${currentValueGSR.toString()})",
                           ),
                           //SizedBox(height: 5),
 
                           ///bloc
                           //Container(color: Colors.black38,height: 2,),
-                      /*
+                          /*
                       const Text(
                             "Stress Level",
                             style:
@@ -250,26 +246,30 @@ class _HomeState extends State<Home> {
                             stream: _stressLevelBlock.currentStressLevelStream,
                             initialData: 0,
                             builder: (context, snapshot) {
-                              print(">>>> Stress level:${snapshot.data}");
+                              ///print(">>>> Stress level:${snapshot.data}");
                               return WidgetStressLevel(
                                   stressLevel: snapshot.data as int);
                             },
                           ),
 
                           const SizedBox(height: 20),
-                          connected? ElevatedButton.icon(
-                            onPressed: (){
-                              _onRecord(context);
-                            },
-                            icon: Icon(_isRecording
-                                ? Icons.stop_circle
-                                : Icons.directions_run),
-                            label: Text(_isRecording?"stop detector":"Start detector"), //label text
-                            style: ElevatedButton.styleFrom(
-                                primary: Colors
-                                    .blueAccent //elevated btton background color
-                                ),
-                          ): Text(""),
+                          connected
+                              ? ElevatedButton.icon(
+                                  onPressed: () {
+                                    _onRecord(context);
+                                  },
+                                  icon: Icon(_isRecording
+                                      ? Icons.stop_circle
+                                      : Icons.directions_run),
+                                  label: Text(_isRecording
+                                      ? "stop detector"
+                                      : "Start detector"), //label text
+                                  style: ElevatedButton.styleFrom(
+                                      primary: Colors
+                                          .blueAccent //elevated btton background color
+                                      ),
+                                )
+                              : Text(""),
 
                           ///go to settings
                           const SizedBox(height: 40),
@@ -321,7 +321,7 @@ class _HomeState extends State<Home> {
 
   /// Dialoig to insert
   void _dialogInsert(BuildContext c_context) {
-    String fn="";
+    String fn = "";
     showDialog(
         context: c_context,
         builder: (BuildContext context) {
@@ -338,8 +338,7 @@ class _HomeState extends State<Home> {
                       onChanged: (value) {
                         fn = value;
                       },
-                      decoration: InputDecoration(
-                          labelText: "file name"),
+                      decoration: InputDecoration(labelText: "file name"),
                     ),
                   ],
                 ),
@@ -356,7 +355,7 @@ class _HomeState extends State<Home> {
                 child: Text("save"),
                 onPressed: () {
                   Navigator.of(context).pop();
-                  _saveFileAndRecorder(c_context,fn);
+                  _saveFileAndRecorder(c_context, fn);
                 },
               )
             ],
@@ -364,20 +363,23 @@ class _HomeState extends State<Home> {
         });
   }
 
-
-  _saveFileAndRecorder(BuildContext cnt,String fileName){
+  _saveFileAndRecorder(BuildContext cnt, String fileName) {
     List<List<int>> dataSignalSL = gsrBuffer.getMatrixSignalAndStressLevels();
     //todo SAVE
     Files files = Files();
     DateTime current = DateTime.now();
     String fn = "$fileName ${_localFormalDateTime(current)}.csv";
-    Record record = Record(filename: fn ,date: current, samples: dataSignalSL.length);
+    Record record =
+        Record(filename: fn, date: current, samples: dataSignalSL.length);
+
     ///write on disk
     //files.writeSignal(signal: signal, record: record);
-    files.writeSignalAndStressLevels(signalAndStressLevels: dataSignalSL,record: record);
+    files.writeSignalAndStressLevels(
+        signalAndStressLevels: dataSignalSL, record: record);
+
     ///write on db
     _recordBloc.addRecord.add(record);
-    show(cnt,"saving .csv file");
+    show(cnt, "saving .csv file");
   }
 
   _onRecord(BuildContext c_context) {
@@ -397,7 +399,7 @@ class _HomeState extends State<Home> {
   }
 
   _turnOnBluetooth(BuildContext cnt) {
-    show(cnt,'Turn on bluetooth');
+    show(cnt, 'Turn on bluetooth');
   }
 
   void disposeBluetooth() {
@@ -503,7 +505,7 @@ class _HomeState extends State<Home> {
       isButtonUnavailable = true;
     });
     if (_device == null) {
-      show(cnt,'No device selected');
+      show(cnt, 'No device selected');
     } else {
       if (!isConnected) {
         await BluetoothConnection.toAddress(_device?.address)
@@ -513,8 +515,7 @@ class _HomeState extends State<Home> {
           setState(() {
             connected = true;
           });
-
-          connection!.input!.listen(_onDataReceived).onDone(() {
+          connection!.input?.listen(_onDataReceived).onDone(() {
             if (isDisconnecting) {
               print('Disconnecting locally!');
             } else {
@@ -528,7 +529,7 @@ class _HomeState extends State<Home> {
           print('Cannot connect, exception occurred');
           print(error);
         });
-        show(cnt,'Device connected');
+        show(cnt, 'Device connected');
 
         setState(() => isButtonUnavailable = false);
       }
@@ -538,13 +539,14 @@ class _HomeState extends State<Home> {
   _onDataReceived(Uint8List data) {
     //[10] == '\n'
     if (data[0] != 10) {
-      String str_from_arduino = ascii.decode(data);
-      double r = double.parse(str_from_arduino);
-      print(r);
+
+      String strFromArduino = ascii.decode(data);
+      double r = double.parse(strFromArduino);
+      print(">>> SIG: $r, (${data.toString()})");
       setState(() {
         currentValueGSR = r;
       });
-      if(_isRecording){
+      if (_isRecording) {
         gsrBuffer.push(r);
         _updateStressLevel();
       }
@@ -552,14 +554,14 @@ class _HomeState extends State<Home> {
   }
 
   // Method to disconnect bluetooth
-  void _disconnect( BuildContext cnt) async {
+  void _disconnect(BuildContext cnt) async {
     setState(() {
       isButtonUnavailable = true;
       deviceState = 0;
     });
 
     await connection!.close();
-    show(cnt,'Device disconnected');
+    show(cnt, 'Device disconnected');
     if (!connection!.isConnected) {
       setState(() {
         connected = false;
@@ -595,7 +597,7 @@ class _HomeState extends State<Home> {
   // Method to show a Snackbar,
   // taking message as the text
   Future show_old(
-  BuildContext cnt,
+    BuildContext cnt,
     String message, {
     Duration duration: const Duration(seconds: 3),
   }) async {
@@ -608,8 +610,9 @@ class _HomeState extends State<Home> {
     );
   }
 
-  show( BuildContext cnt, String message) {
-    FlutterToastr.show(message, cnt, duration: FlutterToastr.lengthLong, position:  FlutterToastr.bottom);
+  show(BuildContext cnt, String message) {
+    FlutterToastr.show(message, cnt,
+        duration: FlutterToastr.lengthLong, position: FlutterToastr.bottom);
   }
 
   //block functions
@@ -618,15 +621,13 @@ class _HomeState extends State<Home> {
         .add(UpdateStressLevelGSR(gsrBuffer.CurrentStressLevel));
   }
 
-
-  String _localFormalDateTime(DateTime dt){
-    String r ="";
+  String _localFormalDateTime(DateTime dt) {
+    String r = "";
     String m = dt.month.toString();
     String d = dt.day.toString();
-    m = m.length<=1? "0$m" : m;
-    d = d.length<=1? "0$d" : d;
-    r="${dt.year}-$m-$d ${dt.hour}:${dt.minute}";
+    m = m.length <= 1 ? "0$m" : m;
+    d = d.length <= 1 ? "0$d" : d;
+    r = "${dt.year}-$m-$d ${dt.hour}:${dt.minute}";
     return r;
   }
-
 }

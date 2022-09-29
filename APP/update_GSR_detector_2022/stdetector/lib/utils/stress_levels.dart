@@ -73,12 +73,12 @@ class StressLevelsProcessing {
   List<double> znorm(List<double> signal, {double znormTheshold = 0.01}) {
     List<double> r = [];
     double std = standardDeviation(signal);
-    print("STD: $std");
+    ///print("STD: $std");
     if (std < znormTheshold) {
       return signal;
     } else {
       double m = mean(signal);
-      print("Media: $m");
+      ///print("Media: $m");
       signal.forEach((e) {
         r.add((e - m) / std);
       });
