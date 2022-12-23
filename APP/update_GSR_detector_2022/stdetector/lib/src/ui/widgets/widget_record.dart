@@ -77,7 +77,7 @@ class WidgetRecordState extends State<WidgetRecord> {
         }
       },
       child: Card(
-        color: selected ? Colors.deepOrange : Colors.white70,
+        color: selected ? Colors.blue : Colors.white70,
         child: ListTile(
           leading: Icon(
             Icons.back_hand,
