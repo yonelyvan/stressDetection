@@ -21,7 +21,7 @@ Conjunto de datos de **Señales de fisiológicas** disponible en:  [WESAD](https
 </br>
 
 
-# Implementación del detector de estrés V2
+# Implementación del detector de estrés
 
 ![Screenshot](hardware-detecto.png)
 
