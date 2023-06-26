@@ -218,6 +218,31 @@ class _HomeState extends State<Home> {
                   ],
                 ),
                 const SizedBox(height: 10),
+                 Padding(
+                   padding: const EdgeInsets.only(left: 8, right: 8),
+                   child: Row(
+                     mainAxisAlignment: MainAxisAlignment.start,
+                     crossAxisAlignment: CrossAxisAlignment.start,
+                     children: [
+                       Text(
+                        'Config server (Endpoint)',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                ),
+                     ],
+                   ),
+                 ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8, right: 8),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'http://192.168.0.252:3000/tasks',
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
                 Container(
                   child: Padding(
                     padding: const EdgeInsets.only(left: 1, right: 1),
