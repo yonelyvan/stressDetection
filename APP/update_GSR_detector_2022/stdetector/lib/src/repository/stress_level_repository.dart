@@ -9,13 +9,11 @@ class StressLevelRepository{
   }
 
   int getCurrentStressLevel(){
-    /// mix stress level from voice and GSR
     int r = _stressLevelGSR;
     return r;
   }
 
   int getStressValueGSR() => _stressLevelGSR;
-
 
   void updateStressValueGSR(int v){
     _stressLevelGSR = v;

@@ -578,6 +578,8 @@ class _HomeState extends State<Home> {
     }
   }
 
+
+
   // Method to disconnect bluetooth
   void _disconnect(BuildContext cnt) async {
     setState(() {
