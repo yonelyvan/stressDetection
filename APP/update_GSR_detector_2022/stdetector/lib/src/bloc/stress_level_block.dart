@@ -50,6 +50,7 @@ class StressLevelBlock{
     print("Block:  Stress value Voice:${repository.getCurrentStressLevel()}");
     _outputCurrentStressLevel.add(repository.getCurrentStressLevel());
 
+
   }
 
 

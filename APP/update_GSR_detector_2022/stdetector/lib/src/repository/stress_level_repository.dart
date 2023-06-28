@@ -1,3 +1,6 @@
+
+import 'package:stdetector/src/model/gsr_data_request.dart';
+
 class StressLevelRepository{
   int _stressLevelGSR = 1;
 

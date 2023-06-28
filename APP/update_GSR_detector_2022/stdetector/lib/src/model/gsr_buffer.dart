@@ -55,7 +55,7 @@ class GSRBuffer {
     return data;
   }
 
-  int get CurrentStressLevel => _currentStressLevel;
+  int get currentStressLevel => _currentStressLevel;
 
   int min(int a, int b) => a<b?a:b;
 

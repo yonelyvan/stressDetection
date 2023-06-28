@@ -1,15 +1,19 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:typed_data';
 
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stdetector/src/bloc/stress_level_block.dart';
 import 'package:stdetector/src/model/gsr_buffer.dart';
+import 'package:stdetector/src/model/gsr_data_request.dart';
 import 'package:stdetector/src/ui/screens/screen_recorders.dart';
 import 'package:stdetector/src/ui/widgets/widget_signal.dart';
 import 'package:stdetector/src/ui/widgets/widget_stress_level.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:http/http.dart' as http;
 
 import '../../bloc/record_bloc.dart';
 import '../../model/gsr_data.dart';
@@ -53,17 +57,26 @@ class _HomeState extends State<Home> {
   bool _isRecording = false;
   final RecordBloc _recordBloc = RecordBloc();
 
+  //server
+  final txtUrlServer = TextEditingController();
+
   @override
   void initState() {
     super.initState();
     initBluetooth();
+    getUrl().then((value){
+      setState(() {
+        txtUrlServer.text = value;
+      });
+    });
   }
 
   @override
-  void dispose() {
+  void dispose()  {
     disposeBluetooth();
     _stressLevelBlock.dispose();
     _recordBloc.dispose();
+    txtUrlServer.dispose();
     super.dispose();
   }
 
@@ -218,27 +231,32 @@ class _HomeState extends State<Home> {
                   ],
                 ),
                 const SizedBox(height: 10),
-                 Padding(
-                   padding: const EdgeInsets.only(left: 8, right: 8),
-                   child: Row(
-                     mainAxisAlignment: MainAxisAlignment.start,
-                     crossAxisAlignment: CrossAxisAlignment.start,
-                     children: [
-                       Text(
+                Padding(
+                  padding: const EdgeInsets.only(left: 8, right: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
                         'Config server (Endpoint)',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
+                      ),
+                    ],
+                  ),
                 ),
-                     ],
-                   ),
-                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 8, right: 8),
                   child: TextField(
+                    controller: txtUrlServer,
+                    onChanged: (value){
+                      saveUrl(value.trim());
+                    },
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      hintText: 'http://192.168.0.252:3000/tasks',
+                      hintText: 'http://192.168.0.252:3000/gsr',
+                      hintStyle: TextStyle(color: Colors.black12),
                     ),
                   ),
                 ),
@@ -407,6 +425,34 @@ class _HomeState extends State<Home> {
     show(cnt, "saving .csv file");
   }
 
+  _sendToServerRealTime() async {
+    if(!_isRecording){
+      return;
+    }
+    String url = txtUrlServer.text.trim();
+    if(url.isEmpty){
+      return;
+    }
+    print(">>>$url");
+    try{
+      final http.Response response = await http.post(
+        //Uri.parse('http://192.168.0.252:3000/gsr'),
+        Uri.parse(url),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, dynamic>{
+          'gsr': currentValueGSR.toInt(),
+          'current_stress_level': gsrBuffer.currentStressLevel,
+          'date_time': DateTime.now().toString(),
+        }),
+      );
+    } catch(e) {
+      log(e.toString());
+    }
+
+  }
+
   _onRecord(BuildContext c_context) {
     if (_isRecording) {
       //stop recording & save file
@@ -564,7 +610,6 @@ class _HomeState extends State<Home> {
   _onDataReceived(Uint8List data) {
     //[10] == '\n'
     if (data[0] != 10) {
-
       String strFromArduino = ascii.decode(data);
       double r = double.parse(strFromArduino);
       print(">>> SIG: $r, (${data.toString()})");
@@ -575,10 +620,10 @@ class _HomeState extends State<Home> {
         gsrBuffer.push(r);
         _updateStressLevel();
       }
+      //send to server
+      _sendToServerRealTime();
     }
   }
-
-
 
   // Method to disconnect bluetooth
   void _disconnect(BuildContext cnt) async {
@@ -645,7 +690,7 @@ class _HomeState extends State<Home> {
   //block functions
   _updateStressLevel() {
     _stressLevelBlock.sendEvent
-        .add(UpdateStressLevelGSR(gsrBuffer.CurrentStressLevel));
+        .add(UpdateStressLevelGSR(gsrBuffer.currentStressLevel));
   }
 
   String _localFormalDateTime(DateTime dt) {
@@ -657,4 +702,16 @@ class _HomeState extends State<Home> {
     r = "${dt.year}-$m-$d ${dt.hour}:${dt.minute}";
     return r;
   }
+
+  Future<void> saveUrl(String url) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('url', url);
+  }
+
+  Future<String> getUrl() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('url') ?? '';
+  }
+
+
 }
