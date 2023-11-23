@@ -64,7 +64,7 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     initBluetooth();
-    getUrl().then((value){
+    getUrl().then((value) {
       setState(() {
         txtUrlServer.text = value;
       });
@@ -72,7 +72,7 @@ class _HomeState extends State<Home> {
   }
 
   @override
-  void dispose()  {
+  void dispose() {
     disposeBluetooth();
     _stressLevelBlock.dispose();
     _recordBloc.dispose();
@@ -250,7 +250,7 @@ class _HomeState extends State<Home> {
                   padding: const EdgeInsets.only(left: 8, right: 8),
                   child: TextField(
                     controller: txtUrlServer,
-                    onChanged: (value){
+                    onChanged: (value) {
                       saveUrl(value.trim());
                     },
                     decoration: InputDecoration(
@@ -296,23 +296,23 @@ class _HomeState extends State<Home> {
                           ),
 
                           const SizedBox(height: 20),
-                          connected
-                              ? ElevatedButton.icon(
-                                  onPressed: () {
-                                    _onRecord(context);
-                                  },
-                                  icon: Icon(_isRecording
-                                      ? Icons.stop_circle
-                                      : Icons.directions_run),
-                                  label: Text(_isRecording
-                                      ? "stop detector"
-                                      : "Start detector"), //label text
-                                  style: ElevatedButton.styleFrom(
-                                      primary: Colors
-                                          .blueAccent //elevated btton background color
-                                      ),
-                                )
-                              : Text(""),
+
+                          ///connected
+                          ElevatedButton.icon(
+                            onPressed: () {
+                              _onRecord(context);
+                            },
+                            icon: Icon(_isRecording
+                                ? Icons.stop_circle
+                                : Icons.directions_run),
+                            label: Text(_isRecording
+                                ? "stop detector"
+                                : "Start detector"), //label text
+                            style: ElevatedButton.styleFrom(
+                                primary: Colors
+                                    .blueAccent //elevated btton background color
+                                ),
+                          ),
 
                           ///go to settings
                           const SizedBox(height: 40),
@@ -333,6 +333,7 @@ class _HomeState extends State<Home> {
                               FlutterBluetoothSerial.instance.openSettings();
                             },
                           ),
+                          const SizedBox(height: 200),
                         ],
                       ),
                     ),
@@ -426,15 +427,15 @@ class _HomeState extends State<Home> {
   }
 
   _sendToServerRealTime() async {
-    if(!_isRecording){
+    if (!_isRecording) {
       return;
     }
     String url = txtUrlServer.text.trim();
-    if(url.isEmpty){
+    if (url.isEmpty) {
       return;
     }
     print(">>>$url");
-    try{
+    try {
       final http.Response response = await http.post(
         //Uri.parse('http://192.168.0.252:3000/gsr'),
         Uri.parse(url),
@@ -447,13 +448,16 @@ class _HomeState extends State<Home> {
           'date_time': DateTime.now().toString(),
         }),
       );
-    } catch(e) {
+    } catch (e) {
       log(e.toString());
     }
-
   }
 
   _onRecord(BuildContext c_context) {
+    if(!connected){
+      show(c_context, 'The GSR sensor is not connected, make sure to connect the GSR sensor.');
+      return;
+    }
     if (_isRecording) {
       //stop recording & save file
       setState(() {
@@ -712,6 +716,4 @@ class _HomeState extends State<Home> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('url') ?? '';
   }
-
-
 }
